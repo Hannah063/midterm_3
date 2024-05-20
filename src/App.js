@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Search from "./components/users/Search";
+import About from "./components/pages/About";
+import NotFound from "./components/pages/NotFound";
 
 const App = () => {
   return (
@@ -13,6 +15,8 @@ const App = () => {
           <h1>GitHub Users Data</h1>
           <Switch>
             <Route exact path="/" component={Search} />
+            <Route exact path="/about" component={About} />
+            <Route path="/*" component={NotFound} />
           </Switch>
         </div>
       </Router>
