@@ -1,22 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Users from "./Users";
 import { searchUsers } from "../../api";
+import GithubContext from "../../github/GithubContext";
 
 const Search = () => {
   const [text, setText] = useState("");
-  const [users, setUsers] = useState([]);
-
-  const clearUsers = () => {
-    setUsers([]);
-  }
+  const { users, dispatch } = useContext(GithubContext);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (text === "") {
       alert("Please enter something");
     } else {
-      const listUsers = await searchUsers(text);
-      setUsers(listUsers);
+      dispatch({ type: "SET_LOADING" });
+      const users = await searchUsers(text);
+      dispatch({ type: "GET_USERS", payload: users });
       setText("");
     }
   };
@@ -40,7 +38,10 @@ const Search = () => {
         />
       </form>
       {users.length > 0 && (
-        <button className="btn btn-danger btn-block" onClick={clearUsers}>
+        <button
+          className="btn btn-danger btn-block"
+          onClick={() => dispatch({ type: "CLEAR_USERS" })}
+        >
           Clear
         </button>
       )}
